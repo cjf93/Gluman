@@ -9,8 +9,6 @@ public class ArmoredMovement : MonoBehaviour {
     private bool goingRight;
 
     private bool traped;
-
-
     private Rigidbody2D _rigidBody2D;
     private Transform _transform;
 
@@ -46,11 +44,11 @@ public class ArmoredMovement : MonoBehaviour {
     void Move(){
         if (goingRight)
         {
-            _transform.position = new Vector3(_transform.position.x + step, _transform.position.y, _transform.position.z);
+            _transform.position = new Vector3(_transform.position.x + step*Time.deltaTime, _transform.position.y, _transform.position.z);
         }
         else 
         {
-            _transform.position = new Vector3(_transform.position.x - step, _transform.position.y, _transform.position.z);
+            _transform.position = new Vector3(_transform.position.x - step * Time.deltaTime, _transform.position.y, _transform.position.z);
         }
     }
 }
