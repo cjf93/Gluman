@@ -6,6 +6,10 @@ public class CatMovement : MonoBehaviour {
     private GameObject huntingTarget;
     private bool targetOnRight;
     private bool isHunting;
+    public float step;
+
+    public float msBetweenJump;
+    private float lastJump;
 
     private bool traped;
     private Rigidbody2D _rigidBody2D;
@@ -17,11 +21,17 @@ public class CatMovement : MonoBehaviour {
         _transform = GetComponent<Transform>();
         traped = false;
         isHunting = false;
+        lastJump = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         SetMove();
+        if (Time.time - lastJump > msBetweenJump && isHunting)
+        {
+            lastJump = Time.time;
+            Jump();
+        }
 	}
     void SetMove()
     {
@@ -41,21 +51,31 @@ public class CatMovement : MonoBehaviour {
     void Move()
     {
         if(targetOnRight) {
-            _transform.position = new Vector3(_transform.position.x + 0.1f, _transform.position.y, _transform.position.z);
+            _transform.position = new Vector3(_transform.position.x + step*Time.deltaTime, _transform.position.y, _transform.position.z);
         }
         else {
-            _transform.position = new Vector3(_transform.position.x -0.1f, _transform.position.y, _transform.position.z);
+            _transform.position = new Vector3(_transform.position.x - step*Time.deltaTime, _transform.position.y, _transform.position.z);
         }
         
     }
     void OnTriggerStay2D(Collider2D other)
     {
-        isHunting = true;
-        huntingTarget = other.gameObject; 
+        if (other.gameObject.tag.Equals("Player"))
+        {
+            isHunting = true;
+            huntingTarget = other.gameObject;
+        }
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        isHunting = false;
-        huntingTarget = other.gameObject;
+        if (other.gameObject.tag.Equals("Player"))
+        {
+            isHunting = false;
+            huntingTarget = other.gameObject;
+        }
+    }
+    void Jump()
+    {
+        _rigidBody2D.AddForce(new Vector2(150f, 300f));
     }
 }
