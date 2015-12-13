@@ -76,6 +76,13 @@ public class CatMovement : MonoBehaviour {
     }
     void Jump()
     {
-        _rigidBody2D.AddForce(new Vector2(150f, 300f));
+        if (targetOnRight)
+        {
+            _rigidBody2D.AddForce(new Vector2(150f, 300f));
+        }
+        else
+        {
+            _rigidBody2D.AddForce(new Vector2(-150f, 300f));
+        }
     }
 }
